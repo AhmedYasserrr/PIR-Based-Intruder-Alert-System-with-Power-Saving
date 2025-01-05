@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Logs</title>
+    <script>
+        // Function to fetch logs dynamically and update the page
+        async function fetchLogs() {
+            try {
+                const response = await fetch('/logs'); // Fetch logs from the server
+                const logs = await response.json();    // Parse the JSON response
+                
+                // Update the logs section
+                const logsContainer = document.getElementById('logs');
+                logsContainer.innerHTML = ''; // Clear current logs
+
+                logs.forEach(log => {
+                    const logItem = document.createElement('div');
+                    logItem.className = 'log'; // Apply styling for individual logs
+                    logItem.textContent = log;
+                    logsContainer.appendChild(logItem);
+                });
+            } catch (error) {
+                console.error('Error fetching logs:', error);
+            }
+        }
+
+        // Fetch logs every 1 second
+        setInterval(fetchLogs, 1000);
+        // Initial fetch
+        fetchLogs();
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        .logs {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+        .log {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .log:last-child {
+            border-bottom: none;
+        }
+        .log:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Arduino Logs</h1>
+    <div class="logs" id="logs">
+        <!-- Logs will be dynamically injected here -->
+    </div>
+</body>
+</html>
